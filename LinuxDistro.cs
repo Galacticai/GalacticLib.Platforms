@@ -111,14 +111,14 @@ namespace GalacticLib.Platforms {
             ///     # Example: ubuntu
             /// </summary>
             public static LinuxDistroName ID
-                => FromID(Bash.Command(_ParseReleaseCommandString("ID")).Output);
+                => NameFromID(Bash.Command(_ParseReleaseCommandString("ID")).Output);
 
             /// <summary> <c> >> /etc/*-release >> $ID_LIKE </c> <br/>
             ///     ID of the distro this is based on <br/><br/>
             ///     # Example: debian (<see cref="string"/>)
             /// </summary>
             public static LinuxDistroName BaseID
-                => FromID(Bash.Command(_ParseReleaseCommandString("ID_LIKE")).Output);
+                => NameFromID(Bash.Command(_ParseReleaseCommandString("ID_LIKE")).Output);
 
             /// <summary> <c> >> /etc/*-release >> $VERSION_ID </c> <br/>
             ///     Version presented in a numerical way <br/><br/>
