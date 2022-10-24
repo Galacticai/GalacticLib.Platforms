@@ -77,61 +77,29 @@ namespace GalacticLib.Platforms {
             public static bool IsWSL
                 => Regex.IsMatch(_KernelString.ToLowerInvariant(), "(microsoft|wsl)");
 
-            /// <summary> <c> uname -r </c> >> (Trimmed down to version only) <br/>
-            ///     Kernel version <br/><br/>
-            ///     # Example: 5.13.0.0 (as <see cref="System.Version"/>)
+            /// <summary> 
+            /// <c> uname -r </c> 
+            /// <br/> Kernel version  (Trimmed down to version only)
             /// </summary>
-            public static Version KernelVersion
-                => _GetKernelVersion();
-            private static Version _GetKernelVersion() {
-                try {
+            /// <returns> # Example: 5.13.0.0 (as <see cref="System.Version"/>) </returns>
+            public static Version GetKernelVersion() {
                     //? Trim leading/trailing space
                     //"  ~~>12.34.56.78.etc.etc<~~ Abcd Abcd   "
-                    string kernelString = _KernelString.Trim()[..' ']; //? Get once
+                string kernelRaw = _KernelString[..' '];
+                string[] kernelPartsRaw = kernelRaw.Trim().Split('.');
 
-                    StringBuilder versionStringBuilder = new();
-                    int dotCount = 0;
-                    for (int i = 0; i < kernelString.Length; i++) {
-
-                        //? Skip double dots
-                        // "12.34.56~~>..~~>.78.etc.etc"
-                        if (i > 0 && kernelString[i] == '.')
-                            //!? INFO: Step into only if in range
-                            if (kernelString[i - 1] == '.')
-                                continue;
-
-                        //? Accept dots
-                        // "12~~>.<~~34~~>.<~~56~~>.<~~78~~>.<~~etc~~>.<~~etc"
-                        if (kernelString[i].Equals('.')) {
-                            dotCount++;
-
-                            //? Reject >=5 numbers (4 dots only)
-                            //"12.34.56.78<~~.etc.etc"
-                            if (dotCount >= 5)
-                                break;
-
-                            versionStringBuilder.Append(kernelString[i]);
-                        }
-
-                        //? Accept digits
-                        // "~~>12<~~.~~>34<~~.~~>56<~~.~~>78<~~.etc.etc"
-                        else if (char.IsDigit(kernelString[i]))
-                            versionStringBuilder.Append(kernelString[i]);
-
-                        //? Reject otherwise
-                        // "12.34.56.78~~> Abcd whatever"
+                int[] kernelParts = { 0, 0, 0, 0 };
+                for (int i = 0; i < 4; i++) {
+                    if (int.TryParse(kernelPartsRaw[i], out int part_int))
+                        kernelParts[i] = part_int;
+                    else {
+                        if (i == 0) continue;
                         else break;
-
                     }
-
-                    //? Done
-                    //"12.34.56.78"
-                    return new Version(versionStringBuilder.ToString());
-
-                } catch {
-                    //! Something went wrong
-                    return new Version(0, 0, 0, 0);
                 }
+                Version kernel_Version
+                    = new(kernelParts[0], kernelParts[1], kernelParts[2], kernelParts[3]);
+                return kernel_Version;
             }
 
             private static string _ParseReleaseCommandString(string variable)
