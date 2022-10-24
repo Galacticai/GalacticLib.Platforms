@@ -75,7 +75,7 @@ namespace GalacticLib.Platforms {
 
             /// <summary> Indicates whether this linux is running in WSL (Windows Subsystem for Linux) </summary>
             public static bool IsWSL
-                => Regex.IsMatch(_KernelString.ToLowerInvariant(), @"(microsoft|wsl)");
+                => Regex.IsMatch(_KernelString.ToLowerInvariant(), "(microsoft|wsl)");
 
             /// <summary> <c> uname -r </c> >> (Trimmed down to version only) <br/>
             ///     Kernel version <br/><br/>
