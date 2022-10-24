@@ -86,15 +86,13 @@ namespace GalacticLib.Platforms {
                 //"  ~~>12.34.56.78<~~.etc.etc Abcd Abcd   "
                 string kernelRaw = _KernelString[..' '];
                 string[] kernelPartsRaw = kernelRaw.Trim().Split('.');
-
                 int[] kernelParts = { 0, 0, 0, 0 };
                 for (int i = 0; i < 4; i++) {
-                    if (int.TryParse(kernelPartsRaw[i], out int part_int))
-                        kernelParts[i] = part_int;
-                    else {
-                        if (i == 0) continue;
-                        else break;
-                    }
+                    bool added = int.TryParse(
+                        kernelPartsRaw[i], //? pull from raw parts
+                        out kernelParts[i] //? push to final parts
+                    );
+                    if (!added) break;
                 }
                 Version kernel_Version
                     = new(kernelParts[0], kernelParts[1], kernelParts[2], kernelParts[3]);
