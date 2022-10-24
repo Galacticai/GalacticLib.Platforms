@@ -35,9 +35,8 @@ namespace GalacticLib.Platforms {
             Other
         }
 
-        public static LinuxDistroName FromID(string linuxDistro)
+        public static LinuxDistroName NameFromID(string linuxDistro)
             => linuxDistro.ToLowerInvariant() switch {
-
                 "alpine" => LinuxDistroName.AlpineLinux,
                 "amzn" => LinuxDistroName.AmazonLinux,
                 "arch" => LinuxDistroName.Arch,
@@ -59,7 +58,6 @@ namespace GalacticLib.Platforms {
                 "ubuntu" => LinuxDistroName.Ubuntu,
                 "ubuntu debian" => LinuxDistroName.Ubuntu,
                 "zorin" => LinuxDistroName.ZorinOS,
-
 
                 _ => LinuxDistroName.Other
             };
