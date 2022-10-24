@@ -1,4 +1,4 @@
-/// —————————————————————————————————————————————
+﻿/// —————————————————————————————————————————————
 //?
 //!? 📜 LinuxDistro.cs
 //!? 🖋️ Galacticai 📅 2022
@@ -83,8 +83,7 @@ namespace GalacticLib.Platforms {
             /// </summary>
             /// <returns> # Example: 5.13.0.0 (as <see cref="System.Version"/>) </returns>
             public static Version GetKernelVersion() {
-                    //? Trim leading/trailing space
-                    //"  ~~>12.34.56.78.etc.etc<~~ Abcd Abcd   "
+                //"  ~~>12.34.56.78<~~.etc.etc Abcd Abcd   "
                 string kernelRaw = _KernelString[..' '];
                 string[] kernelPartsRaw = kernelRaw.Trim().Split('.');
 
